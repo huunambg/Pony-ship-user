@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1082906545283",
+    "firebase_url": "https://taxi-a30eb-default-rtdb.firebaseio.com",
+    "project_id": "taxi-a30eb",
+    "storage_bucket": "taxi-a30eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082906545283:android:c299dea8180aac1c659fb6",
+        "android_client_info": {
+          "package_name": "com.example.test_otp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkqXkRO9gM0BqaRFo3u1_j5u70jIWqIPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082906545283:android:b00e12302fad8c3b659fb6",
+        "android_client_info": {
+          "package_name": "dragon.ct5chau.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkqXkRO9gM0BqaRFo3u1_j5u70jIWqIPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082906545283:android:4999f2cf9c2d030c659fb6",
+        "android_client_info": {
+          "package_name": "dragon.ct5chau.taxi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkqXkRO9gM0BqaRFo3u1_j5u70jIWqIPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
