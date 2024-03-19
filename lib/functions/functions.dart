@@ -545,6 +545,9 @@ userLogin() async {
       result = true;
       pref.setString('Bearer', bearerToken[0].token);
       package = await PackageInfo.fromPlatform();
+
+   //   print("pagekage name : ${package.packageName.toString()}");
+
       if (platform == TargetPlatform.android && package != null) {
         await FirebaseDatabase.instance
             .ref()
