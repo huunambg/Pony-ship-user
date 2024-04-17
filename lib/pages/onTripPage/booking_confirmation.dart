@@ -541,7 +541,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
     _dist = null;
 
     if (widget.type == 2) {
-      var val = await etaRequest();
+      var val = await etaRequest(context);
       if (val == 'logout') {
         navigateLogout();
       }
@@ -1535,9 +1535,6 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                     SizedBox(
                                                       width: media.width * 1,
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
                                                         children: [
                                                           Container(
                                                             margin: EdgeInsets.only(
@@ -1549,7 +1546,12 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                     0.05),
                                                             width: media.width *
                                                                 0.9,
-                                                            child: MyText(
+                                                            child:Row(
+                                                               mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                              children: [
+                                                              MyText(
                                                               text: languages[
                                                                       choosenLanguage]
                                                                   [
@@ -1561,7 +1563,16 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                   FontWeight
                                                                       .bold,
                                                             ),
+                                                            
+                                                          Text("${km}",style:const TextStyle(
+                                                            fontWeight: 
+                                                                  FontWeight
+                                                                      .bold,
+                                                          ),),
+                                                            ],),
                                                           ),
+                                                           
+                                                         
                                                         ],
                                                       ),
                                                     ),
@@ -1730,22 +1741,49 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                                       (widget.type != 2)
                                                                                                           ? Expanded(
                                                                                                               child: (etaDetails[i]['has_discount'] != true)
-                                                                                                                  ? Row(
-                                                                                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                                                                                  ? Container(
+                                                                                                                  alignment: Alignment.center,
+                                                                                                                   margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.05),
+                                                                                                                    child: Column(
+                                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                                       children: [
-                                                                                                                        Text(
-                                                                                                                          etaDetails[i]['total'].toStringAsFixed(2) + etaDetails[i]['currency'],
-                                                                                                                          style: GoogleFonts.poppins(
-                                                                                                                              fontSize: media.width * fourteen,
-                                                                                                                              fontWeight: FontWeight.w600,
-                                                                                                                              color: (choosenVehicle != i)
-                                                                                                                                  ? (isDarkTheme == true)
-                                                                                                                                      ? Colors.white
-                                                                                                                                      : textColor
-                                                                                                                                  : Colors.black),
-                                                                                                                        ),
+                                                                                                                        Row(
+                                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                                         
+                                                                                                                            children: [
+                                                                                                                              Text(
+                                                                                                                                tienviet(int.parse(etaDetails[i]['total'].toString())) + "VND" ,
+                                                                                                                                style: GoogleFonts.poppins(
+                                                                                                                                    fontSize: media.width * fourteen,
+                                                                                                                                    fontWeight: FontWeight.w600,
+                                                                                                                                    color: (choosenVehicle != i)
+                                                                                                                                        ? (isDarkTheme == true)
+                                                                                                                                            ? Colors.white
+                                                                                                                                            : textColor
+                                                                                                                                        : Colors.black),
+                                                                                                                              ),
+                                                                                                                              Text("(Cả phụ phí)", style: GoogleFonts.poppins(
+                                                                                                                                    fontSize: 12,
+                                                                                                                                    fontWeight: FontWeight.w500,
+                                                                                                                                    color: (choosenVehicle != i)
+                                                                                                                                        ? (isDarkTheme == true)
+                                                                                                                                            ? Colors.white
+                                                                                                                                            : textColor
+                                                                                                                                        : Colors.black),)
+                                                                                                                            ],
+                                                                                                                          ),
+                                                                                                                                                                                                                                    Text(" Phụ phí : ${tienviet(int.parse(etaDetails[i]['total_surcharge'].toString()))} VND", style: GoogleFonts.poppins(
+                                                                                                                                    fontSize: 12,
+                                                                                                                                    fontWeight: FontWeight.w500,
+                                                                                                                                    color: (choosenVehicle != i)
+                                                                                                                                        ? (isDarkTheme == true)
+                                                                                                                                            ? Colors.white
+                                                                                                                                            : textColor
+                                                                                                                                        : Colors.black),)
+                                                                                                                    
                                                                                                                       ],
-                                                                                                                    )
+                                                                                                                    ),
+                                                                                                                  )
                                                                                                                   : Row(
                                                                                                                       mainAxisAlignment: MainAxisAlignment.end,
                                                                                                                       children: [
@@ -2606,7 +2644,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                     promoKey.text = '';
                                                                                     promoStatus = null;
                                                                                     if (widget.type != 1) {
-                                                                                      await etaRequest();
+                                                                                      await etaRequest(context);
                                                                                     } else if (widget.type == 1) {
                                                                                       await rentalEta();
                                                                                     }
@@ -3732,7 +3770,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                       });
                                                       if (widget.type != 1) {
                                                         var val =
-                                                            await etaRequest();
+                                                            await etaRequest(context);
                                                         if (val == 'logout') {
                                                           navigateLogout();
                                                         }
@@ -4219,7 +4257,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         });
                                                                                         dynamic result;
                                                                                         if (widget.type != 1) {
-                                                                                          result = await etaRequest();
+                                                                                          result = await etaRequest(context);
                                                                                         } else {
                                                                                           result = await rentalEta();
                                                                                         }
@@ -4255,7 +4293,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                             dynamic val;
                                                                                             // promoKey.text = promoCode;
                                                                                             if (widget.type != 1) {
-                                                                                              val = await etaRequest();
+                                                                                              val = await etaRequest(context);
                                                                                             } else {
                                                                                               val = await rentalEta();
                                                                                             }
@@ -7379,7 +7417,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
 
                                                         if (widget.type != 1) {
                                                           var val =
-                                                              await etaRequest();
+                                                              await etaRequest(context);
                                                           if (val == 'logout') {
                                                             navigateLogout();
                                                           }
@@ -8210,5 +8248,15 @@ class _BookingConfirmationState extends State<BookingConfirmation>
     //Starting the animation
 
     animationController.forward();
+  }
+
+
+int roundToNearest100(double number) {
+  return (number.round() ~/ 100) * 100;
+}
+    String tienviet(int number) {
+    final formatCurrency =
+        new NumberFormat.currency(locale: "vi_VN", symbol: "");
+    return formatCurrency.format(number);
   }
 }

@@ -21,7 +21,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-//demo git ss
   @override
   Widget build(BuildContext context) {
     platform = Theme.of(context).platform;

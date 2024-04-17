@@ -43,7 +43,7 @@ dependencies:
   firebase_messaging: ^14.6.5
   shared_preferences: ^2.0.12
   image_picker: ^1.0.1
-  google_maps_flutter: ^2.1.12
+  google_maps_flutter: 
   geolocator: ^9.0.1
   location: ^5.0.0
   audioplayers: ^4.1.0
@@ -68,6 +68,7 @@ dependencies:
   pinput: ^3.0.1
   intl: ^0.18.1
   icons_launcher: ^2.1.7
+  ndialog: ^4.3.1
 icons_launcher:
   image_path: "assets/icon.png"
   platforms:

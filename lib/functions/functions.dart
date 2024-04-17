@@ -26,7 +26,7 @@ import '../pages/onTripPage/map_page.dart';
 import '../pages/onTripPage/review_page.dart';
 import '../pages/referralcode/referral_code.dart';
 import '../styles/styles.dart';
-
+import 'package:ndialog/ndialog.dart';
 //languages code
 dynamic phcode;
 dynamic platform;
@@ -38,7 +38,7 @@ bool internet = true;
 
 //base url
 String url =
-    'https://taxi.myb.vn/'; //add '/' at the end of the url as 'https://url.com/'
+    'https://pony.myb.vn/'; //add '/' at the end of the url as 'https://url.com/'
 String mapkey = 'AIzaSyABvBTKZlE8A-6TIK6ZK9SCm2dzPhu2x0c';
 
 //check internet connection
@@ -491,7 +491,7 @@ verifyUser(String number) async {
           var uCheck = await getUserDetails();
           val = uCheck;
 
-            print("ucheck $uCheck");
+          print("ucheck $uCheck");
         } else {
           val = false;
         }
@@ -546,7 +546,7 @@ userLogin() async {
       pref.setString('Bearer', bearerToken[0].token);
       package = await PackageInfo.fromPlatform();
 
-   //   print("pagekage name : ${package.packageName.toString()}");
+      //   print("pagekage name : ${package.packageName.toString()}");
 
       if (platform == TargetPlatform.android && package != null) {
         await FirebaseDatabase.instance
@@ -571,10 +571,8 @@ userLogin() async {
     }
 
     print("error2: $e");
-
   }
 }
-
 
 Map<String, dynamic> userDetails = {};
 List favAddress = [];
@@ -1015,10 +1013,16 @@ class AddressList {
 }
 
 //get polylines
+double metersToKm(double meters) {
+  meters = meters / 1000;
+  return meters.ceilToDouble();
+}
 
 List<LatLng> polyList = [];
 
-getPolylines() async {
+String? km;
+
+Future<dynamic> getPolylines() async {
   polyList.clear();
   String pickLat = '';
   String pickLng = '';
@@ -1038,8 +1042,19 @@ getPolylines() async {
         var steps = jsonDecode(response.body)['routes'][0]['overview_polyline']
             ['points'];
         decodeEncodedPolyline(steps);
+        print(
+            "api https://maps.googleapis.com/maps/api/directions/json?origin=$pickLat%2C$pickLng&destination=$dropLat%2C$dropLng&avoid=ferries|indoor&transit_mode=bus&mode=driving&key=$mapkey");
+
+        print(
+            "km ${jsonDecode(response.body)['routes'][0]['legs'][0]['distance']['text']}");
+        print("map data :${jsonDecode(response.body)}");
+
+        km = jsonDecode(response.body)['routes'][0]['legs'][0]['distance']
+            ['text'];
+        //  return
       } else {
         debugPrint(response.body);
+        return null;
       }
     } catch (e) {
       if (e is SocketException) {
@@ -1182,8 +1197,11 @@ List etaDetails = [];
 
 //eta request
 
-etaRequest() async {
+etaRequest(BuildContext context) async {
   dynamic result;
+
+  DateTime time = DateTime.now();
+  print("Hour:  ${time.hour} minute${time.minute}");
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/eta'),
         headers: {
@@ -1195,6 +1213,8 @@ etaRequest() async {
                     .isNotEmpty &&
                 dropStopList.isEmpty)
             ? jsonEncode({
+                'hour': time.hour,
+                'minute':time.minute,
                 'pick_lat': (userRequestData.isNotEmpty)
                     ? userRequestData['pick_lat']
                     : addressList
@@ -1228,6 +1248,8 @@ etaRequest() async {
                         .where((element) => element.type == 'drop')
                         .isNotEmpty)
                 ? jsonEncode({
+                    'hour': time.hour,
+                    'minute':time.minute,
                     'pick_lat': (userRequestData.isNotEmpty)
                         ? userRequestData['pick_lat']
                         : addressList
@@ -1258,6 +1280,8 @@ etaRequest() async {
                         (choosenTransportType == 0) ? 'taxi' : 'delivery'
                   })
                 : jsonEncode({
+                    'hour': time.hour,
+                    'minute':time.minute,
                     'pick_lat': (userRequestData.isNotEmpty)
                         ? userRequestData['pick_lat']
                         : addressList
@@ -1275,6 +1299,7 @@ etaRequest() async {
                         (choosenTransportType == 0) ? 'taxi' : 'delivery'
                   }));
 
+
     if (response.statusCode == 200) {
       etaDetails = jsonDecode(response.body)['data'];
       choosenVehicle = (etaDetails
@@ -1284,6 +1309,20 @@ etaRequest() async {
           : 0;
       result = true;
       valueNotifierBook.incrementNotifier();
+
+      print("data taxi ${etaDetails}");
+     await Future.delayed(const Duration(seconds: 1));
+
+     NDialog(
+    dialogStyle:  DialogStyle(titleDivider: true,backgroundColor: Colors.white),
+    title: const Text("Thông báo"),
+    content: Text("Từ ${etaDetails[0]['surcharge_start_hour']} giờ ${etaDetails[0]['surcharge_start_minute']} phút đến ${etaDetails[0]['surcharge_end_hour']} giờ ${etaDetails[0]['surcharge_start_minute']} phút nếu đi trên ${etaDetails[0]['surcharge_distance']}km thì phụ phí tăng thêm là ${etaDetails[0]['surcharge_amount_in_one_km']}đ/km"),
+    actions: <Widget>[
+    
+      TextButton(child: Text("Đóng cửa sổ",style: TextStyle(color: Colors.black),), onPressed: () => Navigator.pop(context)),
+    ],
+  ).show(context);
+
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
@@ -1296,6 +1335,9 @@ etaRequest() async {
     }
     return result;
   } catch (e) {
+
+    print("Err data taxi $e");
+
     if (e is SocketException) {
       internet = false;
     }
@@ -1431,7 +1473,7 @@ rentalEta() async {
             }));
 
     if (response.statusCode == 200) {
-      etaDetails = jsonDecode(response.body)['data'];
+      etaDetails = jsonDecode(response.body)['data']['data'];
       rentalOption = etaDetails[0]['typesWithPrice']['data'];
       rentalChoosenOption = 0;
       // choosenVehicle = 0;
@@ -1442,6 +1484,8 @@ rentalEta() async {
     } else {
       result = false;
     }
+    print("ren eta ${jsonDecode(response.body)['data']}");
+
     return result;
   } catch (e) {
     if (e is SocketException) {
@@ -1984,7 +2028,7 @@ cancelRequest() async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
-      debugPrint(response.body);
+      debugPrint("cancelRequest ${response.body}");
       result = 'failed';
     }
   } catch (e) {

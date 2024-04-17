@@ -252,7 +252,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                                           ),
                                                           SizedBox(
                                                             width: media.width *
-                                                                0.025,
+                                                                0.02,
                                                           ),
                                                           Row(
                                                             mainAxisAlignment:
@@ -308,7 +308,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                                                               Text(
                                                                             userDetails['notifications_count'].toString(),
                                                                             style:
-                                                                                GoogleFonts.poppins(fontSize: media.width * fourteen, color: (isDarkTheme) ? Colors.black : buttonText),
+                                                                                GoogleFonts.poppins(fontSize: media.width * fourteen, color: (isDarkTheme) ? Color.fromARGB(255, 230, 27, 27) : buttonText),
                                                                           ),
                                                                         ),
                                                                   Icon(

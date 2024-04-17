@@ -44,42 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBCUjIFaQbji5HtyTf6cqmQzRS9j-Zxqx4',
-    appId: '1:1082906545283:web:b4d0668ff1de740a659fb6',
-    messagingSenderId: '1082906545283',
-    projectId: 'taxi-a30eb',
-    authDomain: 'taxi-a30eb.firebaseapp.com',
-    databaseURL: 'https://taxi-a30eb-default-rtdb.firebaseio.com',
-    storageBucket: 'taxi-a30eb.appspot.com',
-    measurementId: 'G-T08TL50ZTY',
+    apiKey: 'AIzaSyA0apv2TKUgWJ5ZE2nl4PrzbmT1aloxqAI',
+    appId: '1:957033296631:web:4b6d12c26e8ab38d26d9f2',
+    messagingSenderId: '957033296631',
+    projectId: 'pony-a861f',
+    authDomain: 'pony-a861f.firebaseapp.com',
+    storageBucket: 'pony-a861f.appspot.com',
+    measurementId: 'G-HFBMS94KQE',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCkqXkRO9gM0BqaRFo3u1_j5u70jIWqIPM',
-    appId: '1:1082906545283:android:4999f2cf9c2d030c659fb6',
-    messagingSenderId: '1082906545283',
-    projectId: 'taxi-a30eb',
-    databaseURL: 'https://taxi-a30eb-default-rtdb.firebaseio.com',
-    storageBucket: 'taxi-a30eb.appspot.com',
+    apiKey: 'AIzaSyBproo3KGKdaUSrjsarU_OfDe73mSfaBNw',
+    appId: '1:957033296631:android:f051328dc990e64e26d9f2',
+    messagingSenderId: '957033296631',
+    projectId: 'pony-a861f',
+    storageBucket: 'pony-a861f.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA37HlfhheAH31CBCQGJ159UWisEsWRp1c',
-    appId: '1:1082906545283:ios:7745ac8679371c69659fb6',
-    messagingSenderId: '1082906545283',
-    projectId: 'taxi-a30eb',
-    databaseURL: 'https://taxi-a30eb-default-rtdb.firebaseio.com',
-    storageBucket: 'taxi-a30eb.appspot.com',
+    apiKey: 'AIzaSyAwkX8QBzpbomfJvpCecyCK_ue-iBwxWiw',
+    appId: '1:957033296631:ios:ed5f125daedeaad826d9f2',
+    messagingSenderId: '957033296631',
+    projectId: 'pony-a861f',
+    storageBucket: 'pony-a861f.appspot.com',
     iosBundleId: 'bundle.id',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA37HlfhheAH31CBCQGJ159UWisEsWRp1c',
-    appId: '1:1082906545283:ios:f054d42b9e965f84659fb6',
-    messagingSenderId: '1082906545283',
-    projectId: 'taxi-a30eb',
-    databaseURL: 'https://taxi-a30eb-default-rtdb.firebaseio.com',
-    storageBucket: 'taxi-a30eb.appspot.com',
+    apiKey: 'AIzaSyAwkX8QBzpbomfJvpCecyCK_ue-iBwxWiw',
+    appId: '1:957033296631:ios:2c19375d08b11f8926d9f2',
+    messagingSenderId: '957033296631',
+    projectId: 'pony-a861f',
+    storageBucket: 'pony-a861f.appspot.com',
     iosBundleId: 'com.example.flutterUser.RunnerTests',
   );
 }

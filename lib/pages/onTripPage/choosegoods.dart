@@ -16,6 +16,7 @@ class ChooseGoods extends StatefulWidget {
 }
 
 String selectedGoodsId = '';
+
 dynamic _selGoods;
 
 class _ChooseGoodsState extends State<ChooseGoods> {
