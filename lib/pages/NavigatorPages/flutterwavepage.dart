@@ -177,7 +177,7 @@ class _FlutterWavePageState extends State<FlutterWavePage> {
                                       }
                                     } else {
                                       val = await addMoneyFlutterwave(
-                                          addMoney, response.transactionId);
+                                          addMoney, response.transactionId,context);
                                       if (val == 'logout') {
                                         navigateLogout();
                                       }

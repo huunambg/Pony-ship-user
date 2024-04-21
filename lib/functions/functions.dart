@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_user/widgets/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -111,7 +112,7 @@ positionStreamData() {
 
 //validate email already exist
 
-validateEmail(email) async {
+validateEmail(email,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -134,6 +135,7 @@ validateEmail(email) async {
           .toString();
     } else {
       debugPrint(response.body);
+        Customdialog().show(context, response.body);
       result = jsonDecode(response.body)['message'];
     }
     return result;
@@ -216,7 +218,7 @@ List languagesCode = [
 //getting country code
 
 List countries = [];
-getCountryCode() async {
+getCountryCode(BuildContext context) async {
   dynamic result;
   try {
     final response = await http.get(Uri.parse('${url}api/v1/countries'));
@@ -230,6 +232,7 @@ getCountryCode() async {
       result = 'success';
     } else {
       debugPrint(response.body);
+        Customdialog().show(context, response.body);
       result = 'error';
     }
   } catch (e) {
@@ -281,7 +284,7 @@ phoneAuth(String phone) async {
 
 String lastNotification = '';
 
-getLocalData() async {
+getLocalData(BuildContext context) async {
   dynamic result;
   bearerToken.clear;
   var connectivityResult = await (Connectivity().checkConnectivity());
@@ -307,7 +310,7 @@ getLocalData() async {
           if (tokens != null) {
             bearerToken.add(BearerClass(type: 'Bearer', token: tokens));
 
-            var responce = await getUserDetails();
+            var responce = await getUserDetails(context);
             if (responce == true) {
               result = '3';
             } else {
@@ -359,7 +362,7 @@ getLocalData() async {
 
 List<BearerClass> bearerToken = <BearerClass>[];
 
-registerUser() async {
+registerUser(BuildContext context) async {
   bearerToken.clear();
   dynamic result;
   try {
@@ -393,7 +396,7 @@ registerUser() async {
           type: jsonVal['token_type'].toString(),
           token: jsonVal['access_token'].toString()));
       pref.setString('Bearer', bearerToken[0].token);
-      await getUserDetails();
+      await getUserDetails(context);
 
       result = 'true';
     } else if (respon.statusCode == 422) {
@@ -405,6 +408,7 @@ registerUser() async {
           .replaceAll(']', '')
           .toString();
     } else {
+        Customdialog().show(context, respon.body);
       debugPrint(respon.body);
       result = jsonDecode(respon.body)['message'];
     }
@@ -421,7 +425,7 @@ registerUser() async {
 
 //update referral code
 
-updateReferral() async {
+updateReferral(BuildContext context) async {
   dynamic result;
   try {
     var response =
@@ -441,6 +445,7 @@ updateReferral() async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = 'false';
     }
@@ -471,7 +476,7 @@ otpCall() async {
 
 // verify user already exist
 
-verifyUser(String number) async {
+verifyUser(String number,BuildContext context) async {
   dynamic val;
   try {
     var response = await http.post(
@@ -488,7 +493,7 @@ verifyUser(String number) async {
         print("check $check");
 
         if (check == true) {
-          var uCheck = await getUserDetails();
+          var uCheck = await getUserDetails(context);
           val = uCheck;
 
           print("ucheck $uCheck");
@@ -507,6 +512,7 @@ verifyUser(String number) async {
           .replaceAll(']', '')
           .toString();
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       val = jsonDecode(response.body)['message'];
     }
@@ -580,7 +586,7 @@ List tripStops = [];
 List banners = [];
 
 //user current state
-getUserDetails() async {
+getUserDetails(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.get(
@@ -649,7 +655,7 @@ getUserDetails() async {
               instructions: userRequestData['drop_poc_instruction']));
         }
         if (userRequestData['accepted_at'] != null) {
-          getCurrentMessages();
+          getCurrentMessages(context);
         }
 
         if (userRequestData.isNotEmpty) {
@@ -657,7 +663,7 @@ getUserDetails() async {
               rideStreamUpdate?.isPaused == true ||
               rideStreamStart == null ||
               rideStreamStart?.isPaused == true) {
-            streamRide();
+            streamRide(context);
           }
         } else {
           if (rideStreamUpdate != null ||
@@ -724,7 +730,7 @@ getUserDetails() async {
             requestStreamStart?.isPaused == true ||
             requestStreamEnd == null ||
             requestStreamEnd?.isPaused == true) {
-          streamRequest();
+          streamRequest(context);
         }
         valueNotifierHome.incrementNotifier();
         valueNotifierBook.incrementNotifier();
@@ -752,6 +758,7 @@ getUserDetails() async {
       result = 'logout';
     } else {
       debugPrint(response.body);
+        Customdialog().show(context, response.body);
       result = false;
     }
   } catch (e) {
@@ -1326,6 +1333,7 @@ etaRequest(BuildContext context) async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       if (jsonDecode(response.body)['message'] ==
           "service not available with this location") {
@@ -1344,7 +1352,7 @@ etaRequest(BuildContext context) async {
   }
 }
 
-etaRequestWithPromo() async {
+etaRequestWithPromo(BuildContext context) async {
   dynamic result;
   // etaDetails.clear();
   try {
@@ -1430,6 +1438,7 @@ etaRequestWithPromo() async {
       result = 'logout';
     } else {
       debugPrint(response.body);
+        Customdialog().show(context, response.body);
       promoStatus = 2;
       promoCode = '';
       valueNotifierBook.incrementNotifier();
@@ -1446,7 +1455,7 @@ etaRequestWithPromo() async {
 
 //rental eta request
 
-rentalEta() async {
+rentalEta(BuildContext context) async {
   dynamic result;
   try {
     var response =
@@ -1480,6 +1489,7 @@ rentalEta() async {
       result = true;
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {
+      Customdialog().show(context, response.body);
       result = 'logout';
     } else {
       result = false;
@@ -1490,6 +1500,7 @@ rentalEta() async {
   } catch (e) {
     if (e is SocketException) {
       internet = false;
+    Customdialog().show(context,e);
     }
   }
 }
@@ -1536,6 +1547,7 @@ rentalRequestWithPromo() async {
   } catch (e) {
     if (e is SocketException) {
       internet = false;
+      
     }
   }
 }
@@ -1555,7 +1567,7 @@ Map<String, dynamic> userRequestData = {};
 
 //create request
 
-createRequest(value, api) async {
+createRequest(value, api,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('$url$api'),
@@ -1566,7 +1578,7 @@ createRequest(value, api) async {
         body: value);
     if (response.statusCode == 200) {
       userRequestData = jsonDecode(response.body)['data'];
-      streamRequest();
+      streamRequest(context);
       result = 'success';
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {
@@ -1600,7 +1612,7 @@ createRequest(value, api) async {
 
 //create request
 
-createRequestLater(val, api) async {
+createRequestLater(val, api,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('$url$api'),
@@ -1611,12 +1623,13 @@ createRequestLater(val, api) async {
         body: val);
     if (response.statusCode == 200) {
       result = 'success';
-      streamRequest();
+      streamRequest(context);
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
       debugPrint(response.body);
+      Customdialog().show(context,e);
       if (jsonDecode(response.body)['message'] == 'no drivers available') {
         noDriverFound = true;
       } else {
@@ -1629,7 +1642,7 @@ createRequestLater(val, api) async {
   } catch (e) {
     if (e is SocketException) {
       result = 'no internet';
-      internet = false;
+      internet = false;Customdialog().show(context,e);
     }
   }
   return result;
@@ -1637,7 +1650,7 @@ createRequestLater(val, api) async {
 
 //create request with promo code
 
-createRequestLaterPromo() async {
+createRequestLaterPromo(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/create'),
@@ -1679,7 +1692,7 @@ createRequestLaterPromo() async {
         }));
     if (response.statusCode == 200) {
       myMarkers.clear();
-      streamRequest();
+      streamRequest(context);
       valueNotifierBook.incrementNotifier();
       result = 'success';
     } else if (response.statusCode == 401) {
@@ -1698,7 +1711,7 @@ createRequestLaterPromo() async {
   } catch (e) {
     if (e is SocketException) {
       internet = false;
-      result = 'no internet';
+      result = 'no internet';Customdialog().show(context,e);
     }
   }
 
@@ -1707,7 +1720,7 @@ createRequestLaterPromo() async {
 
 //create rental request
 
-createRentalRequest() async {
+createRentalRequest(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/create'),
@@ -1742,7 +1755,7 @@ createRentalRequest() async {
         }));
     if (response.statusCode == 200) {
       userRequestData = jsonDecode(response.body)['data'];
-      streamRequest();
+      streamRequest(context);
       result = 'success';
 
       valueNotifierBook.incrementNotifier();
@@ -1763,13 +1776,13 @@ createRentalRequest() async {
     if (e is SocketException) {
       internet = false;
       result = 'no internet';
-      valueNotifierBook.incrementNotifier();
+      valueNotifierBook.incrementNotifier();Customdialog().show(context,e);
     }
   }
   return result;
 }
 
-createRentalRequestWithPromo() async {
+createRentalRequestWithPromo(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/create'),
@@ -1805,7 +1818,7 @@ createRentalRequestWithPromo() async {
         }));
     if (response.statusCode == 200) {
       userRequestData = jsonDecode(response.body)['data'];
-      streamRequest();
+      streamRequest(context);
       result = 'success';
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {
@@ -1825,13 +1838,13 @@ createRentalRequestWithPromo() async {
   } catch (e) {
     if (e is SocketException) {
       internet = false;
-      result = 'no internet';
+      result = 'no internet';Customdialog().show(context,e);
     }
   }
   return result;
 }
 
-createRentalRequestLater() async {
+createRentalRequestLater(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/create'),
@@ -1868,7 +1881,7 @@ createRentalRequestLater() async {
         }));
     if (response.statusCode == 200) {
       result = 'success';
-      streamRequest();
+      streamRequest(context);
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -1892,7 +1905,7 @@ createRentalRequestLater() async {
   return result;
 }
 
-createRentalRequestLaterPromo() async {
+createRentalRequestLaterPromo(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/create'),
@@ -1930,7 +1943,7 @@ createRentalRequestLaterPromo() async {
         }));
     if (response.statusCode == 200) {
       myMarkers.clear();
-      streamRequest();
+      streamRequest(context);
       valueNotifierBook.incrementNotifier();
       result = 'success';
     } else if (response.statusCode == 401) {
@@ -1999,7 +2012,7 @@ class RequestCreate {
 
 //user cancel request
 
-cancelRequest() async {
+cancelRequest(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/cancel'),
@@ -2028,6 +2041,7 @@ cancelRequest() async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint("cancelRequest ${response.body}");
       result = 'failed';
     }
@@ -2039,7 +2053,7 @@ cancelRequest() async {
   return result;
 }
 
-cancelLaterRequest(val) async {
+cancelLaterRequest(val,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/cancel'),
@@ -2062,6 +2076,7 @@ cancelLaterRequest(val) async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       result = 'failed';
       debugPrint(response.body);
     }
@@ -2075,7 +2090,7 @@ cancelLaterRequest(val) async {
 
 //user cancel request with reason
 
-cancelRequestWithReason(reason) async {
+cancelRequestWithReason(reason,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/cancel'),
@@ -2104,6 +2119,7 @@ cancelRequestWithReason(reason) async {
       result = 'logout';
     } else {
       result = 'failed';
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
     }
     return result;
@@ -2129,7 +2145,7 @@ makingPhoneCall(phnumber) async {
 
 //cancellation reason
 List cancelReasonsList = [];
-cancelReason(reason) async {
+cancelReason(reason,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.get(
@@ -2148,6 +2164,7 @@ cancelReason(reason) async {
       result = 'logout';
     } else {
       debugPrint(response.body);
+        Customdialog().show(context, response.body);
       result = false;
     }
   } catch (e) {
@@ -2174,7 +2191,7 @@ class CancelReasonJson {
 
 //add user rating
 
-userRating() async {
+userRating(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/rating'),
@@ -2188,11 +2205,12 @@ userRating() async {
           'comment': feedback
         }));
     if (response.statusCode == 200) {
-      await getUserDetails();
+      await getUserDetails(context);
       result = true;
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+      Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = false;
     }
@@ -2233,7 +2251,7 @@ class NearByDriver {
 
 //add favourites location
 
-addFavLocation(lat, lng, add, name) async {
+addFavLocation(lat, lng, add, name,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -2250,17 +2268,19 @@ addFavLocation(lat, lng, add, name) async {
         }));
     if (response.statusCode == 200) {
       result = true;
-      await getUserDetails();
+      await getUserDetails(context);
       valueNotifierHome.incrementNotifier();
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+       Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = false;
     }
     return result;
   } catch (e) {
     if (e is SocketException) {
+      
       internet = false;
     }
   }
@@ -2269,7 +2289,7 @@ addFavLocation(lat, lng, add, name) async {
 //sos data
 List sosData = [];
 
-getSosData(lat, lng) async {
+getSosData(lat, lng,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.get(
@@ -2287,6 +2307,7 @@ getSosData(lat, lng) async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = 'failure';
     }
@@ -2323,7 +2344,7 @@ notifyAdmin() async {
 
 List chatList = [];
 
-getCurrentMessages() async {
+getCurrentMessages(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.get(
@@ -2347,6 +2368,7 @@ getCurrentMessages() async {
       result = 'logout';
     } else {
       result = 'failed';
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
     }
     return result;
@@ -2359,7 +2381,7 @@ getCurrentMessages() async {
 
 //send chat
 
-sendMessage(chat) async {
+sendMessage(chat,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/request/send'),
@@ -2370,7 +2392,7 @@ sendMessage(chat) async {
         body:
             jsonEncode({'request_id': userRequestData['id'], 'message': chat}));
     if (response.statusCode == 200) {
-      await getCurrentMessages();
+      await getCurrentMessages(context);
       FirebaseDatabase.instance
           .ref('requests/${userRequestData['id']}')
           .update({'message_by_user': chatList.length});
@@ -2391,7 +2413,7 @@ sendMessage(chat) async {
 
 //message seen
 
-messageSeen() async {
+messageSeen(BuildContext context) async {
   var response = await http.post(Uri.parse('${url}api/v1/request/seen'),
       headers: {
         'Authorization': 'Bearer ${bearerToken[0].token}',
@@ -2399,7 +2421,7 @@ messageSeen() async {
       },
       body: jsonEncode({'request_id': userRequestData['id']}));
   if (response.statusCode == 200) {
-    getCurrentMessages();
+    getCurrentMessages(context);
   } else {
     debugPrint(response.body);
   }
@@ -2407,7 +2429,7 @@ messageSeen() async {
 
 //add sos
 
-addSos(name, number) async {
+addSos(name, number,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(Uri.parse('${url}api/v1/common/sos/store'),
@@ -2418,7 +2440,7 @@ addSos(name, number) async {
         body: jsonEncode({'name': name, 'number': number}));
 
     if (response.statusCode == 200) {
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -2437,7 +2459,7 @@ addSos(name, number) async {
 
 //remove sos
 
-deleteSos(id) async {
+deleteSos(id,BuildContext context) async {
   dynamic result;
   try {
     var response = await http
@@ -2446,7 +2468,7 @@ deleteSos(id) async {
       'Content-Type': 'application/json'
     });
     if (response.statusCode == 200) {
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -2479,7 +2501,7 @@ openBrowser(browseUrl) async {
 List faqData = [];
 Map<String, dynamic> myFaqPage = {};
 
-getFaqData(lat, lng) async {
+getFaqData(lat, lng,BuildContext context) async {
   dynamic result;
   try {
     var response = await http
@@ -2497,6 +2519,7 @@ getFaqData(lat, lng) async {
     } else {
       debugPrint(response.body);
       result = 'failure';
+        Customdialog().show(context, response.body);
     }
   } catch (e) {
     if (e is SocketException) {
@@ -2540,7 +2563,7 @@ getFaqPages(id) async {
 
 //remove fav address
 
-removeFavAddress(id) async {
+removeFavAddress(id,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.get(
@@ -2550,7 +2573,7 @@ removeFavAddress(id) async {
           'Content-Type': 'application/json'
         });
     if (response.statusCode == 200) {
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -2629,7 +2652,7 @@ userLogout() async {
 List myHistory = [];
 Map<String, dynamic> myHistoryPage = {};
 
-getHistory(id) async {
+getHistory(id,BuildContext context) async {
   dynamic result;
 
   try {
@@ -2645,7 +2668,9 @@ getHistory(id) async {
     } else {
       debugPrint(response.body);
       result = 'failure';
+        Customdialog().show(context, response.body);
       valueNotifierBook.incrementNotifier();
+
     }
   } catch (e) {
     if (e is SocketException) {
@@ -2788,7 +2813,7 @@ getClientToken() async {
 
 Map<String, dynamic> stripeToken = {};
 
-getStripePayment(money) async {
+getStripePayment(money,BuildContext context) async {
   dynamic results;
   try {
     var response =
@@ -2804,6 +2829,7 @@ getStripePayment(money) async {
     } else if (response.statusCode == 401) {
       results = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       results = 'failure';
     }
@@ -2818,7 +2844,7 @@ getStripePayment(money) async {
 
 //stripe add money
 
-addMoneyStripe(amount, nonce) async {
+addMoneyStripe(amount, nonce,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -2831,11 +2857,12 @@ addMoneyStripe(amount, nonce) async {
             {'amount': amount, 'payment_nonce': nonce, 'payment_id': nonce}));
     if (response.statusCode == 200) {
       await getWalletHistory();
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = 'failure';
     }
@@ -2914,7 +2941,7 @@ getPaystackPayment(body) async {
   return results;
 }
 
-addMoneyPaystack(amount, nonce) async {
+addMoneyPaystack(amount, nonce,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -2927,12 +2954,13 @@ addMoneyPaystack(amount, nonce) async {
             {'amount': amount, 'payment_nonce': nonce, 'payment_id': nonce}));
     if (response.statusCode == 200) {
       await getWalletHistory();
-      await getUserDetails();
+      await getUserDetails(context);
       paystackCode.clear();
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = 'failure';
     }
@@ -2947,7 +2975,7 @@ addMoneyPaystack(amount, nonce) async {
 
 //flutterwave
 
-addMoneyFlutterwave(amount, nonce) async {
+addMoneyFlutterwave(amount, nonce,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -2960,7 +2988,7 @@ addMoneyFlutterwave(amount, nonce) async {
             {'amount': amount, 'payment_nonce': nonce, 'payment_id': nonce}));
     if (response.statusCode == 200) {
       await getWalletHistory();
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -2979,7 +3007,7 @@ addMoneyFlutterwave(amount, nonce) async {
 
 //razorpay
 
-addMoneyRazorpay(amount, nonce) async {
+addMoneyRazorpay(amount, nonce,BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -2992,7 +3020,7 @@ addMoneyRazorpay(amount, nonce) async {
             {'amount': amount, 'payment_nonce': nonce, 'payment_id': nonce}));
     if (response.statusCode == 200) {
       await getWalletHistory();
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
     } else if (response.statusCode == 401) {
       result = 'logout';
@@ -3050,7 +3078,7 @@ getCfToken(money, currency) async {
 
 Map<String, dynamic> cfSuccessList = {};
 
-cashFreePaymentSuccess() async {
+cashFreePaymentSuccess(BuildContext context) async {
   dynamic result;
   try {
     var response = await http.post(
@@ -3073,7 +3101,7 @@ cashFreePaymentSuccess() async {
       if (jsonDecode(response.body)['success'] == true) {
         result = 'success';
         await getWalletHistory();
-        await getUserDetails();
+        await getUserDetails(context);
       } else {
         debugPrint(response.body);
         result = 'failure';
@@ -3081,6 +3109,7 @@ cashFreePaymentSuccess() async {
     } else if (response.statusCode == 401) {
       result = 'logout';
     } else {
+        Customdialog().show(context, response.body);
       debugPrint(response.body);
       result = 'failure';
     }
@@ -3095,7 +3124,7 @@ cashFreePaymentSuccess() async {
 
 //edit user profile
 
-updateProfile(name, email) async {
+updateProfile(name, email,BuildContext context) async {
   dynamic result;
   try {
     var response = http.MultipartRequest(
@@ -3116,7 +3145,7 @@ updateProfile(name, email) async {
     if (request.statusCode == 200) {
       result = 'success';
       if (val['success'] == true) {
-        await getUserDetails();
+        await getUserDetails(context);
       }
     } else if (request.statusCode == 401) {
       result = 'logout';
@@ -3129,6 +3158,7 @@ updateProfile(name, email) async {
           .replaceAll(']', '')
           .toString();
     } else {
+        Customdialog().show(context, respon.body);
       debugPrint(val);
       result = jsonDecode(respon.body)['message'];
     }
@@ -3140,7 +3170,7 @@ updateProfile(name, email) async {
   return result;
 }
 
-updateProfileWithoutImage(name, email) async {
+updateProfileWithoutImage(name, email,BuildContext context) async {
   dynamic result;
   try {
     var response = http.MultipartRequest(
@@ -3157,7 +3187,7 @@ updateProfileWithoutImage(name, email) async {
     if (request.statusCode == 200) {
       result = 'success';
       if (val['success'] == true) {
-        await getUserDetails();
+        await getUserDetails(context);
       }
     } else if (request.statusCode == 401) {
       result = 'logout';
@@ -3171,6 +3201,7 @@ updateProfileWithoutImage(name, email) async {
           .toString();
     } else {
       debugPrint(val);
+        Customdialog().show(context, respon.body);
       result = jsonDecode(respon.body)['message'];
     }
   } catch (e) {
@@ -3281,7 +3312,7 @@ StreamSubscription<DatabaseEvent>? requestStreamStart;
 StreamSubscription<DatabaseEvent>? requestStreamEnd;
 bool userCancelled = false;
 
-streamRequest() {
+streamRequest(BuildContext context) {
   requestStreamEnd?.cancel();
   requestStreamStart?.cancel();
   rideStreamUpdate?.cancel();
@@ -3297,7 +3328,7 @@ streamRequest() {
       .handleError((onError) {
     requestStreamStart?.cancel();
   }).listen((event) async {
-    getUserDetails();
+    getUserDetails(context);
     requestStreamEnd?.cancel();
     requestStreamStart?.cancel();
   });
@@ -3306,7 +3337,7 @@ streamRequest() {
 StreamSubscription<DatabaseEvent>? rideStreamStart;
 StreamSubscription<DatabaseEvent>? rideStreamUpdate;
 
-streamRide() {
+streamRide(BuildContext context) {
   requestStreamEnd?.cancel();
   requestStreamStart?.cancel();
   rideStreamUpdate?.cancel();
@@ -3325,12 +3356,12 @@ streamRide() {
         event.snapshot.key.toString() == 'trip_arrived' ||
         event.snapshot.key.toString() == 'is_completed' ||
         event.snapshot.key.toString() == 'modified_by_driver') {
-      getUserDetails();
+      getUserDetails(context);
     } else if (event.snapshot.key.toString() == 'message_by_driver') {
-      getCurrentMessages();
+      getCurrentMessages(context);
     } else if (event.snapshot.key.toString() == 'cancelled_by_driver') {
       requestCancelledByDriver = true;
-      getUserDetails();
+      getUserDetails(context);
     }
   });
 
@@ -3341,12 +3372,12 @@ streamRide() {
     rideStreamStart?.cancel();
   }).listen((DatabaseEvent event) async {
     if (event.snapshot.key.toString() == 'message_by_driver') {
-      getCurrentMessages();
+      getCurrentMessages(context);
     } else if (event.snapshot.key.toString() == 'cancelled_by_driver') {
       requestCancelledByDriver = true;
-      getUserDetails();
+      getUserDetails(context);
     } else if (event.snapshot.key.toString() == 'modified_by_driver') {
-      getUserDetails();
+      getUserDetails(context);
     }
   });
 }
@@ -3693,7 +3724,7 @@ emailVerify(String email, otpNumber) async {
   }
 }
 
-paymentMethod(payment) async {
+paymentMethod(payment,BuildContext context) async {
   dynamic result;
   try {
     var response =
@@ -3717,7 +3748,7 @@ paymentMethod(payment) async {
           .ref('requests')
           .child(userRequestData['id'])
           .update({'modified_by_user': ServerValue.timestamp});
-      await getUserDetails();
+      await getUserDetails(context);
       result = 'success';
       valueNotifierBook.incrementNotifier();
     } else if (response.statusCode == 401) {

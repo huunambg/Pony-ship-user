@@ -121,7 +121,7 @@ class _ReferralState extends State<Referral> {
                               _error = '';
                               _loading = true;
                             });
-                            var result = await updateReferral();
+                            var result = await updateReferral(context);
                             if (result == 'true') {
                               navigate();
                             } else {

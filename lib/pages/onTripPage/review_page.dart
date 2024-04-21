@@ -238,7 +238,7 @@ class _ReviewState extends State<Review> {
                               setState(() {
                                 _loading = true;
                               });
-                              var result = await userRating();
+                              var result = await userRating(context);
 
                               if (result == true) {
                                 navigate();

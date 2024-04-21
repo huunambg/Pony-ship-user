@@ -37,7 +37,7 @@ class _HistoryState extends State<History> {
       myHistoryPage.clear();
       myHistory.clear();
     });
-    var val = await getHistory('is_later=1');
+    var val = await getHistory('is_later=1',context);
     if (val == 'success') {
       setState(() {
         _isLoading = false;
@@ -118,7 +118,7 @@ class _HistoryState extends State<History> {
                                       _isLoading = true;
                                     });
 
-                                    await getHistory('is_later=1');
+                                    await getHistory('is_later=1',context);
                                     setState(() {
                                       _isLoading = false;
                                     });
@@ -161,7 +161,7 @@ class _HistoryState extends State<History> {
                                       _isLoading = true;
                                     });
 
-                                    await getHistory('is_completed=1');
+                                    await getHistory('is_completed=1',context);
                                     setState(() {
                                       _isLoading = false;
                                     });
@@ -204,7 +204,7 @@ class _HistoryState extends State<History> {
                                       _isLoading = true;
                                     });
 
-                                    await getHistory('is_cancelled=1');
+                                    await getHistory('is_cancelled=1',context);
                                     setState(() {
                                       _isLoading = false;
                                     });
@@ -1246,7 +1246,7 @@ class _HistoryState extends State<History> {
                                                 _isLoading = true;
                                               });
                                               await cancelLaterRequest(
-                                                  _cancelId);
+                                                  _cancelId,context);
                                               await _getHistory();
                                               setState(() {
                                                 _cancelRide = false;

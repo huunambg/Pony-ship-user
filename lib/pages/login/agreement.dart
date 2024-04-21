@@ -189,7 +189,7 @@ class _AggreementPageState extends State<AggreementPage> {
                           loginLoading = true;
                           _error = '';
                           valueNotifierLogin.incrementNotifier();
-                          var register = await registerUser();
+                          var register = await registerUser(context);
                           if (register == 'true') {
                             //referral page
                             navigate();

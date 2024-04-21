@@ -2568,7 +2568,7 @@ class _MapsState extends State<Maps>
                                                             favLat,
                                                             favLng,
                                                             favSelectedAddress,
-                                                            favNameText);
+                                                            favNameText,context);
                                                     setState(() {
                                                       _loading = false;
                                                       if (val == true) {
@@ -2594,7 +2594,7 @@ class _MapsState extends State<Maps>
                                                             favLat,
                                                             favLng,
                                                             favSelectedAddress,
-                                                            favName);
+                                                            favName,context);
                                                     setState(() {
                                                       _loading = false;
                                                       if (val == true) {
@@ -3033,7 +3033,7 @@ class _MapsState extends State<Maps>
                                 onTap: () {
                                   setState(() {
                                     internetTrue();
-                                    getUserDetails();
+                                    getUserDetails(context);
                                   });
                                 },
                               ))

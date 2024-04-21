@@ -50,7 +50,7 @@ class _RazorPayPageState extends State<RazorPayPage> {
         navigateLogout();
       }
     } else {
-      val = await addMoneyRazorpay(addMoney, response.paymentId);
+      val = await addMoneyRazorpay(addMoney, response.paymentId,context);
       if (val == 'logout') {
         navigateLogout();
       }

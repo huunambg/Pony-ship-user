@@ -116,12 +116,12 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
   }
 
   normallogin() async {
-    var verify = await verifyUser(phnumber);
+    var verify = await verifyUser(phnumber,context);
     navigate(verify);
   }
 
   emaillogin() async {
-    var verify = await verifyUser(phnumber);
+    var verify = await verifyUser(phnumber,context);
     // var register = await registerUser();
     if (verify == false) {
       _pinPutController2.text = '123456';
@@ -144,7 +144,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
       // Sign the user in (or link) with the credential
       await FirebaseAuth.instance.signInWithCredential(credentials);
 
-      var verify = await verifyUser(phnumber);
+      var verify = await verifyUser(phnumber,context);
       credentials = null;
       navigate(verify);
     } on FirebaseAuthException catch (error) {
@@ -277,7 +277,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
                                         valueNotifierLogin.incrementNotifier();
                                         if (isfromomobile == true) {
                                           var verify =
-                                              await verifyUser(phnumber);
+                                              await verifyUser(phnumber,context);
                                           if (verify == false) {
                                             setState(() {
                                               _error = '';
@@ -301,7 +301,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
                                             });
                                           }
                                         } else {
-                                          var verify = await verifyUser(email);
+                                          var verify = await verifyUser(email,context);
                                           if (verify == false) {
                                             loginLoading = true;
 
@@ -377,7 +377,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
                             valueNotifierLogin.incrementNotifier();
                             //firebase code send false
                             if (phoneAuthCheck == false) {
-                              var verify = await verifyUser(phnumber);
+                              var verify = await verifyUser(phnumber,context);
                               value = 0;
                               navigate(verify);
                             } else {
@@ -392,7 +392,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
                                 await FirebaseAuth.instance
                                     .signInWithCredential(credential);
 
-                                var verify = await verifyUser(phnumber);
+                                var verify = await verifyUser(phnumber,context);
                                 navigate(verify);
 
                                 value = 0;
@@ -431,7 +431,7 @@ class _OtpState extends State<Otp> with TickerProviderStateMixin {
                               if (result == 'success') {
                                 isfromomobile = false;
                                 _error = '';
-                                var verify = await verifyUser(email);
+                                var verify = await verifyUser(email,context);
                                 value = 1;
                                 navigate(verify);
                               } else {

@@ -516,7 +516,7 @@ class _EditProfileState extends State<EditProfile> {
 
                               nav = await updateProfile(
                                   '${firstname.text} ${lastname.text}',
-                                  email.text);
+                                  email.text,context);
 
                               if (nav != 'success') {
                                 _error = nav.toString();
@@ -864,7 +864,7 @@ class _EditProfileState extends State<EditProfile> {
                                         .signInWithCredential(credential);
                                     await updateProfile(
                                       '${firstname.text} ${lastname.text}',
-                                      email.text,
+                                      email.text,context
                                     );
                                   } on FirebaseAuthException catch (error) {
                                     if (error.code ==

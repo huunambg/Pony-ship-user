@@ -1009,7 +1009,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1068,7 +1068,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1128,7 +1128,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1185,7 +1185,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1245,7 +1245,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1304,7 +1304,7 @@ class _InvoiceState extends State<Invoice> {
                                                                   false;
                                                             });
                                                             var val =
-                                                                await getUserDetails();
+                                                                await getUserDetails(context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();
@@ -1581,7 +1581,7 @@ class _InvoiceState extends State<Invoice> {
                                                             });
                                                             var val =
                                                                 await paymentMethod(
-                                                                    myPaymentMethod);
+                                                                    myPaymentMethod,context);
                                                             if (val ==
                                                                 'logout') {
                                                               navigateLogout();

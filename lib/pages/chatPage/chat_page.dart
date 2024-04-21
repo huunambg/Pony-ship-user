@@ -20,7 +20,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     //get messages
-    getCurrentMessages();
+    getCurrentMessages(context);
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _ChatPageState extends State<ChatPage> {
                       curve: Curves.ease);
                 });
                 //call for message seen
-                messageSeen();
+                messageSeen(context);
 
                 return Directionality(
                   textDirection: (languageDirection == 'rtl')
@@ -246,7 +246,7 @@ class _ChatPageState extends State<ChatPage> {
                                       setState(() {
                                         _sendingMessage = true;
                                       });
-                                      await sendMessage(chatText.text);
+                                      await sendMessage(chatText.text,context);
                                       chatText.clear();
                                       setState(() {
                                         _sendingMessage = false;

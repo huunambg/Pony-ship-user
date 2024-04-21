@@ -129,7 +129,7 @@ class _LoadingPageState extends State<LoadingPage> {
       if (updateAvailable == false) {
         await getDetailsOfDevice();
         if (internet == true) {
-          var val = await getLocalData();
+          var val = await getLocalData(context);
 
           if (val == '3') {
             navigate();

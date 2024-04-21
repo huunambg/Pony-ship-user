@@ -144,7 +144,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
       if (_controller != null) {
         _controller?.setMapStyle(mapStyle);
       }
-      getUserDetails();
+      getUserDetails(context);
       if (timers == null &&
           userRequestData.isNotEmpty &&
           userRequestData['accepted_at'] == null) {
@@ -186,7 +186,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
           } else if (userRequestData.isNotEmpty &&
               userRequestData['accepted_at'] == null &&
               timing == 0) {
-            var val = await cancelRequest();
+            var val = await cancelRequest(context);
 
             setState(() {
               noDriverFound = true;
@@ -547,7 +547,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
       }
     }
     if (widget.type == 1) {
-      var val = await rentalEta();
+      var val = await rentalEta(context);
       if (val == 'logout') {
         navigateLogout();
       }
@@ -2636,7 +2636,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                       promoStatus = null;
                                                                                     });
                                                                                     if (widget.type != 1 && promoKey.text.isNotEmpty) {
-                                                                                      await etaRequestWithPromo();
+                                                                                      await etaRequestWithPromo(context);
                                                                                     } else if (widget.type == 1 && promoKey.text.isNotEmpty) {
                                                                                       await rentalRequestWithPromo();
                                                                                     }
@@ -2646,7 +2646,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                     if (widget.type != 1) {
                                                                                       await etaRequest(context);
                                                                                     } else if (widget.type == 1) {
-                                                                                      await rentalEta();
+                                                                                      await rentalEta(context);
                                                                                     }
                                                                                   }
                                                                                   setState(() {
@@ -2817,7 +2817,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'drop_address': addressList.lastWhere((e) => e.type == 'drop').address,
                                                                                           'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                                         }),
-                                                                                        'api/v1/request/create');
+                                                                                        'api/v1/request/create',context);
                                                                                   } else {
                                                                                     result = await createRequest(
                                                                                         (addressList.where((element) => element.type == 'drop').isNotEmpty)
@@ -2850,7 +2850,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                                 'pick_address': addressList.firstWhere((e) => e.type == 'pickup').address,
                                                                                                 'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                                               }),
-                                                                                        'api/v1/request/create');
+                                                                                        'api/v1/request/create',context);
                                                                                   }
                                                                                 } else {
                                                                                   if (dropStopList.isNotEmpty) {
@@ -2880,7 +2880,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'stops': jsonEncode(dropStopList),
                                                                                           'goods_type_quantity': goodsSize
                                                                                         }),
-                                                                                        'api/v1/request/delivery/create');
+                                                                                        'api/v1/request/delivery/create',context);
                                                                                   } else {
                                                                                     result = await createRequest(
                                                                                         jsonEncode({
@@ -2907,7 +2907,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'goods_type_id': selectedGoodsId.toString(),
                                                                                           'goods_type_quantity': goodsSize
                                                                                         }),
-                                                                                        'api/v1/request/delivery/create');
+                                                                                        'api/v1/request/delivery/create',context);
                                                                                   }
                                                                                 }
                                                                               } else {
@@ -2941,7 +2941,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'drop_address': addressList.lastWhere((e) => e.type == 'drop').address,
                                                                                           'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                                         }),
-                                                                                        'api/v1/request/create');
+                                                                                        'api/v1/request/create',context);
                                                                                   } else {
                                                                                     result = await createRequest(
                                                                                         (addressList.where((element) => element.type == 'drop').isNotEmpty)
@@ -2976,7 +2976,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                                 'promocode_id': etaDetails[choosenVehicle]['promocode_id'],
                                                                                                 'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                                               }),
-                                                                                        'api/v1/request/create');
+                                                                                        'api/v1/request/create',context);
                                                                                   }
                                                                                 } else {
                                                                                   if (dropStopList.isNotEmpty) {
@@ -3007,7 +3007,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'stops': jsonEncode(dropStopList),
                                                                                           'goods_type_quantity': goodsSize
                                                                                         }),
-                                                                                        'api/v1/request/delivery/create');
+                                                                                        'api/v1/request/delivery/create',context);
                                                                                   } else {
                                                                                     result = await createRequest(
                                                                                         jsonEncode({
@@ -3035,7 +3035,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                           'goods_type_id': selectedGoodsId.toString(),
                                                                                           'goods_type_quantity': goodsSize
                                                                                         }),
-                                                                                        'api/v1/request/delivery/create');
+                                                                                        'api/v1/request/delivery/create',context);
                                                                                   }
                                                                                 }
                                                                               }
@@ -3057,7 +3057,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         'request_eta_amount': rentalOption[choosenVehicle]['fare_amount'],
                                                                                         'rental_pack_id': etaDetails[rentalChoosenOption]['id']
                                                                                       }),
-                                                                                      'api/v1/request/create');
+                                                                                      'api/v1/request/create',context);
                                                                                 } else {
                                                                                   result = await createRequest(
                                                                                       jsonEncode({
@@ -3079,7 +3079,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         'goods_type_id': selectedGoodsId.toString(),
                                                                                         'goods_type_quantity': goodsSize
                                                                                       }),
-                                                                                      'api/v1/request/delivery/create');
+                                                                                      'api/v1/request/delivery/create',context);
                                                                                 }
                                                                               } else {
                                                                                 if (choosenTransportType == 0) {
@@ -3099,7 +3099,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         'request_eta_amount': rentalOption[choosenVehicle]['fare_amount'],
                                                                                         'rental_pack_id': etaDetails[rentalChoosenOption]['id']
                                                                                       }),
-                                                                                      'api/v1/request/create');
+                                                                                      'api/v1/request/create',context);
                                                                                 } else {
                                                                                   result = await createRequest(
                                                                                       jsonEncode({
@@ -3122,7 +3122,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         'pickup_poc_mobile': addressList[0].number,
                                                                                         'pickup_poc_instruction': addressList[0].instructions,
                                                                                       }),
-                                                                                      'api/v1/request/delivery/create');
+                                                                                      'api/v1/request/delivery/create',context);
                                                                                 }
                                                                               }
                                                                             }
@@ -3776,7 +3776,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                         }
                                                       } else {
                                                         var val =
-                                                            await rentalEta();
+                                                            await rentalEta(context);
                                                         if (val == 'logout') {
                                                           navigateLogout();
                                                         }
@@ -4259,7 +4259,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                         if (widget.type != 1) {
                                                                                           result = await etaRequest(context);
                                                                                         } else {
-                                                                                          result = await rentalEta();
+                                                                                          result = await rentalEta(context);
                                                                                         }
                                                                                         setState(() {
                                                                                           _isLoading = false;
@@ -4295,7 +4295,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                                             if (widget.type != 1) {
                                                                                               val = await etaRequest(context);
                                                                                             } else {
-                                                                                              val = await rentalEta();
+                                                                                              val = await rentalEta(context);
                                                                                             }
                                                                                             if (val == 'logout') {
                                                                                               navigateLogout();
@@ -4362,7 +4362,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                             .type !=
                                                                         1) {
                                                                       val =
-                                                                          await etaRequestWithPromo();
+                                                                          await etaRequestWithPromo(context);
                                                                     } else {
                                                                       val =
                                                                           await rentalRequestWithPromo();
@@ -4660,7 +4660,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                     width: media.width * 0.5,
                                                     onTap: () async {
                                                       var val =
-                                                          await cancelRequest();
+                                                          await cancelRequest(context);
                                                       if (val == 'logout') {
                                                         navigateLogout();
                                                       }
@@ -5327,7 +5327,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                               setState(() {
                                                                                 _isLoading = true;
                                                                               });
-                                                                              var reason = await cancelReason((userRequestData['is_driver_arrived'] == 0) ? 'before' : 'after');
+                                                                              var reason = await cancelReason((userRequestData['is_driver_arrived'] == 0) ? 'before' : 'after',context);
                                                                               if (reason == true) {
                                                                                 setState(() {
                                                                                   _cancellingError = '';
@@ -5663,7 +5663,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                         '';
                                                                     var val =
                                                                         await cancelRequestWithReason(
-                                                                            _cancelCustomReason);
+                                                                            _cancelCustomReason,context);
                                                                     if (val ==
                                                                         'logout') {
                                                                       navigateLogout();
@@ -5685,7 +5685,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                 } else {
                                                                   var val =
                                                                       await cancelRequestWithReason(
-                                                                          _cancelReason);
+                                                                          _cancelReason,context);
                                                                   if (val ==
                                                                       'logout') {
                                                                     navigateLogout();
@@ -5962,7 +5962,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                               'is_later': true,
                                                                               'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                             }),
-                                                                      'api/v1/request/create');
+                                                                      'api/v1/request/create',context);
                                                                 } else {
                                                                   if (dropStopList
                                                                       .isNotEmpty) {
@@ -6017,7 +6017,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                           'goods_type_quantity':
                                                                               goodsSize
                                                                         }),
-                                                                        'api/v1/request/delivery/create');
+                                                                        'api/v1/request/delivery/create',context);
                                                                   } else {
                                                                     val = await createRequestLater(
                                                                         jsonEncode({
@@ -6068,7 +6068,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                           'goods_type_quantity':
                                                                               goodsSize
                                                                         }),
-                                                                        'api/v1/request/delivery/create');
+                                                                        'api/v1/request/delivery/create',context);
                                                                   }
                                                                 }
                                                                 setState(() {
@@ -6131,7 +6131,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                               'is_later': true,
                                                                               'request_eta_amount': etaDetails[choosenVehicle]['total']
                                                                             }),
-                                                                      'api/v1/request/create');
+                                                                      'api/v1/request/create',context);
                                                                 } else {
                                                                   if (dropStopList
                                                                       .isNotEmpty) {
@@ -6188,7 +6188,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                           'goods_type_quantity':
                                                                               goodsSize
                                                                         }),
-                                                                        'api/v1/request/delivery/create');
+                                                                        'api/v1/request/delivery/create',context);
                                                                   } else {
                                                                     val = await createRequestLater(
                                                                         jsonEncode({
@@ -6241,7 +6241,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                           'goods_type_quantity':
                                                                               goodsSize
                                                                         }),
-                                                                        'api/v1/request/delivery/create');
+                                                                        'api/v1/request/delivery/create',context);
                                                                   }
                                                                 }
                                                                 setState(() {
@@ -6314,7 +6314,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                         'rental_pack_id':
                                                                             etaDetails[rentalChoosenOption]['id']
                                                                       }),
-                                                                      'api/v1/request/create');
+                                                                      'api/v1/request/create',context);
                                                                 } else {
                                                                   val = await createRequestLater(
                                                                       jsonEncode({
@@ -6366,7 +6366,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                         'pickup_poc_instruction':
                                                                             addressList[0].instructions,
                                                                       }),
-                                                                      'api/v1/request/delivery/create');
+                                                                      'api/v1/request/delivery/create',context);
                                                                 }
                                                                 setState(() {
                                                                   if (val ==
@@ -6433,7 +6433,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                         'rental_pack_id':
                                                                             etaDetails[rentalChoosenOption]['id'],
                                                                       }),
-                                                                      'api/v1/request/create');
+                                                                      'api/v1/request/create',context);
                                                                 } else {
                                                                   val = await createRequestLater(
                                                                       jsonEncode({
@@ -6487,7 +6487,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                                         'pickup_poc_instruction':
                                                                             addressList[0].instructions,
                                                                       }),
-                                                                      'api/v1/request/delivery/create');
+                                                                      'api/v1/request/delivery/create',context);
                                                                 }
                                                                 setState(() {
                                                                   if (val ==
@@ -7423,7 +7423,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                           }
                                                         } else {
                                                           var val =
-                                                              await rentalEta();
+                                                              await rentalEta(context);
                                                           if (val == 'logout') {
                                                             navigateLogout();
                                                           }
@@ -7863,7 +7863,7 @@ class _BookingConfirmationState extends State<BookingConfirmation>
                                                         _isLoading = true;
                                                       });
                                                       var val =
-                                                          await cancelRequest();
+                                                          await cancelRequest(context);
                                                       updateAmount.clear();
 
                                                       if (val == 'logout') {

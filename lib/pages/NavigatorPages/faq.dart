@@ -37,14 +37,14 @@ class _FaqState extends State<Faq> {
 //get faq data
   faqDatas() async {
     if (currentLocation != null) {
-      await getFaqData(currentLocation.latitude, currentLocation.longitude);
+      await getFaqData(currentLocation.latitude, currentLocation.longitude,context);
       setState(() {
         _faqCompleted = true;
         _isLoading = false;
       });
     } else {
       var loc = await Location.instance.getLocation();
-      await getFaqData(loc.latitude, loc.longitude);
+      await getFaqData(loc.latitude, loc.longitude,context);
       setState(() {
         _faqCompleted = true;
         _isLoading = false;

@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
 import 'package:permission_handler/permission_handler.dart' as perm;
-
 import '../../functions/functions.dart';
 import '../../styles/styles.dart';
 import '../../translations/translation.dart';
@@ -1621,7 +1620,7 @@ class _DropLocationState extends State<DropLocation>
                                                           favLat,
                                                           favLng,
                                                           favSelectedAddress,
-                                                          favNameText);
+                                                          favNameText,context);
                                                   setState(() {
                                                     _isLoading = false;
                                                     if (val == true) {
@@ -1646,7 +1645,7 @@ class _DropLocationState extends State<DropLocation>
                                                           favLat,
                                                           favLng,
                                                           favSelectedAddress,
-                                                          favName);
+                                                          favName,context);
                                                   setState(() {
                                                     _isLoading = false;
                                                     if (val == true) {

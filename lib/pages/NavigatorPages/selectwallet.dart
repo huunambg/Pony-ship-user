@@ -134,7 +134,7 @@ class _SelectWalletState extends State<SelectWallet> {
                                         _isLoading = true;
                                       });
                                       var val =
-                                          await getStripePayment(addMoney);
+                                          await getStripePayment(addMoney,context);
                                       if (val == 'success') {
                                         dynamic val2;
                                         try {
@@ -169,7 +169,7 @@ class _SelectWalletState extends State<SelectWallet> {
                                             }
                                           } else {
                                             val3 = await addMoneyStripe(
-                                                addMoney, val2.id);
+                                                addMoney, val2.id,context);
                                           }
                                           if (val3 == 'success') {
                                             setState(() {

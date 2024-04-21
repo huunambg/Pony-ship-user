@@ -56,7 +56,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     isverifyemail = false;
     isLoginemail = false;
     isfromomobile = true;
-    var result = await getCountryCode();
+    var result = await getCountryCode(context);
     if (result == 'success') {
       setState(() {
         loginLoading = false;
@@ -591,7 +591,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                                           );
                                                         });
                                                   } else {
-                                                    getCountryCode();
+                                                    getCountryCode(context);
                                                   }
                                                   setState(() {});
                                                 },

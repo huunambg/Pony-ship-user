@@ -336,7 +336,7 @@ class _SosState extends State<Sos> {
                                               });
 
                                               var val =
-                                                  await deleteSos(_deleteId);
+                                                  await deleteSos(_deleteId,context);
                                               if (val == 'success') {
                                                 setState(() {
                                                   _isDeleting = false;

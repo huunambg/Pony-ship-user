@@ -343,7 +343,7 @@ class _NamePageState extends State<NamePage> {
                                                 );
                                               });
                                         } else {
-                                          getCountryCode();
+                                          getCountryCode(context);
                                         }
                                         setState(() {});
                                       },
@@ -498,7 +498,7 @@ class _NamePageState extends State<NamePage> {
                                     }
                                     email = emailtext.text;
                                     var result =
-                                        await validateEmail(emailtext.text);
+                                        await validateEmail(emailtext.text,context);
                                     if (result == 'success') {
                                       isfromomobile = true;
                                       isverifyemail = true;

@@ -69,7 +69,7 @@ class _CashFreePageState extends State<CashFreePage> {
               navigateLogout();
             }
           } else {
-            verify = await cashFreePaymentSuccess();
+            verify = await cashFreePaymentSuccess(context);
             if (verify == 'logout') {
               navigateLogout();
             }

@@ -44,7 +44,7 @@ class _WalletPageState extends State<WalletPage> {
 //get wallet details
   getWallet() async {
     var val = await getWalletHistory();
-    await getCountryCode();
+    await getCountryCode(context);
     if (val == 'success') {
       _isLoading = false;
       _completed = true;

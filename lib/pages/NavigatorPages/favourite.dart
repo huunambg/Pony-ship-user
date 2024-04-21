@@ -349,7 +349,7 @@ class _FavoriteState extends State<Favorite> {
                                             _isLoading = true;
                                           });
                                           var result = await removeFavAddress(
-                                              _deletingId);
+                                              _deletingId,context);
                                           if (result == 'success') {
                                             setState(() {
                                               _deletingAddress = false;
